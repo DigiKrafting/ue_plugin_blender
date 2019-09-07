@@ -50,7 +50,7 @@ This can be ignored as nothing is actually imported, blender_addon_ue_data.json 
 
 # Installation
 
-Download either the tar.gz or zip from [https://github.com/DigiKrafting/ue_blender_importer/releases/latest](https://github.com/DigiKrafting/ue_blender_importer/releases/latest)
+Download either the tar.gz or zip from [https://github.com/DigiKrafting/ue_plugin_blender/releases/latest](https://github.com/DigiKrafting/ue_plugin_blender/releases/latest)
 
 Extract and copy "Blender_Importer" to your projects "Plugins" folder (if it doesn't exist you'll need to create it) or to "C:\Program Files\Epic Games\UE_4.23\Engine\Plugins\Editor".
 
