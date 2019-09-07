@@ -2,6 +2,8 @@
 
 Unreal Engine Editor Plugin for processing meshes imported from Blender. Designed to work with the blender addon: https://github.com/DigiKrafting/blender_addon_ue.
 
+\* WIP - ALPHA
+
 # Features
 
 - Assigns textures to materials for mesh exported from Blender
