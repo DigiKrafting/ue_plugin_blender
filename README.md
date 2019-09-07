@@ -1,6 +1,6 @@
 # UE Blender Importer
 
-Unreal Engine Editor Plugin for processing meshes imported from Blender. Designed to work with the blender addon: https://github.com/DigiKrafting/blender_addon_ue.
+Unreal Engine Editor Plugin for processing meshes imported from Blender. Designed to work with the blender addon https://github.com/DigiKrafting/blender_addon_ue which creates the "blender_addon_ue_data.json" needed for this plugin to activate.
 
 \* WIP - ALPHA
 
@@ -38,6 +38,15 @@ Unreal Engine Editor Plugin for processing meshes imported from Blender. Designe
     ]
 }
 ~~~
+
+### Log Error Message
+~~~
+AssetReimport: Failed to import file C:/Users/kye/Documents/Unreal Projects/DKS_Importer_Project/Content/Meshes/Test/blender_addon_ue_data.json.
+~~~
+
+This can be ignored as nothing is actually imported, blender_addon_ue_data.json is deleted once processed.
+
+\* If a UObject is returned from UImport_Factory::FactoryCreateFile, "blender_addon_ue_data.uasset" gets created. I tried returning the material from FImport_Processer::Process_JSON_Data, the error goes aways with a valid imported message, but the unneeded uasset file is created.
 
 # Installation
 

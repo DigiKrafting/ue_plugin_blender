@@ -20,7 +20,7 @@ private: \
 	static void StaticRegisterNativesUImport_Factory(); \
 	friend struct Z_Construct_UClass_UImport_Factory_Statics; \
 public: \
-	DECLARE_CLASS(UImport_Factory, UFactory, COMPILED_IN_FLAGS(0), CASTCLASS_None, TEXT("/Script/Blender_Importer"), NO_API) \
+	DECLARE_CLASS(UImport_Factory, UFactory, COMPILED_IN_FLAGS(0 | CLASS_Transient), CASTCLASS_None, TEXT("/Script/Blender_Importer"), NO_API) \
 	DECLARE_SERIALIZER(UImport_Factory)
 
 
@@ -29,7 +29,7 @@ private: \
 	static void StaticRegisterNativesUImport_Factory(); \
 	friend struct Z_Construct_UClass_UImport_Factory_Statics; \
 public: \
-	DECLARE_CLASS(UImport_Factory, UFactory, COMPILED_IN_FLAGS(0), CASTCLASS_None, TEXT("/Script/Blender_Importer"), NO_API) \
+	DECLARE_CLASS(UImport_Factory, UFactory, COMPILED_IN_FLAGS(0 | CLASS_Transient), CASTCLASS_None, TEXT("/Script/Blender_Importer"), NO_API) \
 	DECLARE_SERIALIZER(UImport_Factory)
 
 

@@ -40,7 +40,6 @@ void EmptyLinkFunctionForGeneratedCodeImport_Factory() {}
 	};
 #if WITH_METADATA
 	const UE4CodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UImport_Factory_Statics::Class_MetaDataParams[] = {
-		{ "HideCategories", "Object" },
 		{ "IncludePath", "Import_Factory.h" },
 		{ "ModuleRelativePath", "Public/Import_Factory.h" },
 	};
@@ -60,7 +59,7 @@ void EmptyLinkFunctionForGeneratedCodeImport_Factory() {}
 		0,
 		0,
 		0,
-		0x000000A0u,
+		0x000000A8u,
 		METADATA_PARAMS(Z_Construct_UClass_UImport_Factory_Statics::Class_MetaDataParams, ARRAY_COUNT(Z_Construct_UClass_UImport_Factory_Statics::Class_MetaDataParams))
 	};
 	UClass* Z_Construct_UClass_UImport_Factory()
@@ -72,7 +71,7 @@ void EmptyLinkFunctionForGeneratedCodeImport_Factory() {}
 		}
 		return OuterClass;
 	}
-	IMPLEMENT_CLASS(UImport_Factory, 3054864883);
+	IMPLEMENT_CLASS(UImport_Factory, 1763245714);
 	template<> BLENDER_IMPORTER_API UClass* StaticClass<UImport_Factory>()
 	{
 		return UImport_Factory::StaticClass();

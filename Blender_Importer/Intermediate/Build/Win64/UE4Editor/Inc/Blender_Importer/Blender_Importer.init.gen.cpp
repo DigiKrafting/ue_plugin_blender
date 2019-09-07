@@ -21,7 +21,7 @@ void EmptyLinkFunctionForGeneratedCodeBlender_Importer_init() {}
 				nullptr,
 				0,
 				PKG_CompiledIn | 0x00000040,
-				0x3D50620E,
+				0x9A7AEB84,
 				0x374559E1,
 				METADATA_PARAMS(nullptr, 0)
 			};
