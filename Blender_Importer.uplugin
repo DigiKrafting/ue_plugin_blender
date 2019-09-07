@@ -1,0 +1,24 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "0.1",
+	"FriendlyName": "Blender Importer",
+	"Description": "Blender Addon UE Importer",
+	"Category": "Importers",
+	"CreatedBy": "DigiKrafting.Studio",
+	"CreatedByURL": "https://github.com/DigiKrafting/",
+	"DocsURL": "https://github.com/DigiKrafting/ue_blender_importer",
+	"MarketplaceURL": "",
+	"SupportURL": "https://github.com/DigiKrafting/ue_blender_importer",
+	"EngineVersion": "4.23.0",
+	"CanContainContent": false,
+	"IsBetaVersion": true,
+	"Installed": true,
+	"Modules": [
+		{
+			"Name": "Blender_Importer",
+			"Type": "Editor",
+			"LoadingPhase": "Default"
+		}
+	]
+}
