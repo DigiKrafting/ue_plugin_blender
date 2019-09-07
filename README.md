@@ -1,12 +1,12 @@
 # UE Blender Importer
 
-Unreal Engine Editor Plugin for processing meshes imported from Blender. Designed to work with the blender addon https://github.com/DigiKrafting/blender_addon_ue which creates the "blender_addon_ue_data.json" needed for this plugin to activate.
+Unreal Engine Editor Plugin for processing meshes/data imported from Blender. Designed to work with the blender addon https://github.com/DigiKrafting/blender_addon_ue which creates the "blender_addon_ue_data.json" needed for this plugin to activate.
 
 \* WIP - ALPHA
 
 # Features
 
-- Assigns textures to materials for mesh exported from Blender
+- Assigns textures to materials
 
 # Roadmap
 
