@@ -45,7 +45,9 @@ Download either the tar.gz or zip from [https://github.com/DigiKrafting/ue_blend
 
 Extract to your Plugins folder (if it doesn't exist you'll need to create it) or to C:\Program Files\Epic Games\UE_4.23\Engine\Plugins\Editor.
 
-E.g. c:/projects/projects/plugins (Should be the same level as your Content folder c:/projects/projects/Content)
+E.g. c:/projects/projects/Plugins (Should be the same level as your Content folder c:/projects/projects/Content)
+
+Rename folder to Blender_Importer so you end up with Plugins/Blender_Importer.
 
 # Screenshots
 ## Blender
