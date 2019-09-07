@@ -63,3 +63,5 @@ You should end up with Plugins/Blender_Importer.
 ![alt](/screenshots/ue_blender.png)
 ## Unreal Editor
 ![alt](/screenshots/ue_material_setup.png)
+## Material Editor
+![alt](/screenshots/ue_material_nodes.png)
