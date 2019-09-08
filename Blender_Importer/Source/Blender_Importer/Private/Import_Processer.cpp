@@ -47,6 +47,7 @@ bool FImport_Processer::Process_JSON_Data(const FString& Filename)
 			const FString data_ambient_occlusion = json->GetStringField(TEXT("ambient_occlusion"));
 			const FString data_metallic = json->GetStringField(TEXT("metallic"));
 			const FString data_roughness = json->GetStringField(TEXT("roughness"));
+			const FString data_emissive = json->GetStringField(TEXT("emissive"));
 
 			FString PackageName = TEXT("/Game/") + data_path + data_name;
 
@@ -58,6 +59,9 @@ bool FImport_Processer::Process_JSON_Data(const FString& Filename)
 			Package->FullyLoad();
 			Package->SetDirtyFlag(true);
 			
+			int32 position_x = -400;
+			int32 position_y = -300;
+
 			// Base Color
 
 			if (data_base_color != "") {
@@ -69,10 +73,15 @@ bool FImport_Processer::Process_JSON_Data(const FString& Filename)
 					UMaterialExpressionTextureSample* TextureExpression = NewObject<UMaterialExpressionTextureSample>(UnrealMaterial);
 					TextureExpression->Texture = Texture_Base_Color;
 					TextureExpression->SamplerType = SAMPLERTYPE_Color;
+					TextureExpression->MaterialExpressionEditorX = position_x;
+					TextureExpression->MaterialExpressionEditorY = position_y;
 					UnrealMaterial->Expressions.Add(TextureExpression);
 					UnrealMaterial->BaseColor.Expression = TextureExpression;
+					
 				}
-			
+				
+				position_y += 300;
+
 			}
 			
 			// ORM
@@ -86,14 +95,17 @@ bool FImport_Processer::Process_JSON_Data(const FString& Filename)
 					UMaterialExpressionTextureSample* TextureExpression = NewObject<UMaterialExpressionTextureSample>(UnrealMaterial);
 					TextureExpression->Texture = Texture_ORM;
 					TextureExpression->SamplerType = SAMPLERTYPE_Color;
+					TextureExpression->MaterialExpressionEditorX = position_x;
+					TextureExpression->MaterialExpressionEditorY = position_y;
 					UnrealMaterial->Expressions.Add(TextureExpression);
-
 					UnrealMaterial->AmbientOcclusion.Connect(1, TextureExpression); // R
 					UnrealMaterial->Roughness.Connect(2, TextureExpression); // G
 					UnrealMaterial->Metallic.Connect(3, TextureExpression); // B
-
+					
 				}
-			
+
+				position_y += 300;
+
 			} else {
 
 				// Ambient Occlusion
@@ -107,9 +119,13 @@ bool FImport_Processer::Process_JSON_Data(const FString& Filename)
 						UMaterialExpressionTextureSample* TextureExpression = NewObject<UMaterialExpressionTextureSample>(UnrealMaterial);
 						TextureExpression->Texture = Texture_Ambient_Occlusion;
 						TextureExpression->SamplerType = SAMPLERTYPE_Color;
+						TextureExpression->MaterialExpressionEditorX = position_x;
+						TextureExpression->MaterialExpressionEditorY = position_y;
 						UnrealMaterial->Expressions.Add(TextureExpression);
 						UnrealMaterial->AmbientOcclusion.Expression = TextureExpression;
 					}
+					
+					position_y += 300;
 
 				}
 				
@@ -124,9 +140,13 @@ bool FImport_Processer::Process_JSON_Data(const FString& Filename)
 						UMaterialExpressionTextureSample* TextureExpression = NewObject<UMaterialExpressionTextureSample>(UnrealMaterial);
 						TextureExpression->Texture = Texture_Metallic;
 						TextureExpression->SamplerType = SAMPLERTYPE_Color;
+						TextureExpression->MaterialExpressionEditorX = position_x;
+						TextureExpression->MaterialExpressionEditorY = position_y;
 						UnrealMaterial->Expressions.Add(TextureExpression);
 						UnrealMaterial->Metallic.Expression = TextureExpression;
 					}
+					
+					position_y += 300;
 
 				}
 				
@@ -141,11 +161,37 @@ bool FImport_Processer::Process_JSON_Data(const FString& Filename)
 						UMaterialExpressionTextureSample* TextureExpression = NewObject<UMaterialExpressionTextureSample>(UnrealMaterial);
 						TextureExpression->Texture = Texture_Roughness;
 						TextureExpression->SamplerType = SAMPLERTYPE_Color;
+						TextureExpression->MaterialExpressionEditorX = position_x;
+						TextureExpression->MaterialExpressionEditorY = position_y;
 						UnrealMaterial->Expressions.Add(TextureExpression);
 						UnrealMaterial->Roughness.Expression = TextureExpression;
 					}
+					
+					position_y += 300;
 
 				}
+
+			}
+			
+			// Emissive
+
+			if (data_emissive != "") {
+
+				FStringAssetReference AssetPath_Emissive(TEXT("/Game/") + data_path + data_emissive);
+				UTexture* Texture_Emissive = Cast<UTexture>(AssetPath_Emissive.TryLoad());
+				if (Texture_Emissive)
+				{
+					UMaterialExpressionTextureSample* TextureExpression = NewObject<UMaterialExpressionTextureSample>(UnrealMaterial);
+					TextureExpression->Texture = Texture_Emissive;
+					TextureExpression->SamplerType = SAMPLERTYPE_Color;
+					TextureExpression->MaterialExpressionEditorX = position_x;
+					TextureExpression->MaterialExpressionEditorY = position_y;
+					UnrealMaterial->Expressions.Add(TextureExpression);
+					UnrealMaterial->EmissiveColor.Expression = TextureExpression;
+
+				}
+
+				position_y += 300;
 
 			}
 
@@ -160,9 +206,13 @@ bool FImport_Processer::Process_JSON_Data(const FString& Filename)
 					UMaterialExpressionTextureSample* TextureExpression = NewObject<UMaterialExpressionTextureSample>(UnrealMaterial);
 					TextureExpression->Texture = Texture_Normal;
 					TextureExpression->SamplerType = SAMPLERTYPE_Normal;
+					TextureExpression->MaterialExpressionEditorX = position_x;
+					TextureExpression->MaterialExpressionEditorY = position_y;
 					UnrealMaterial->Expressions.Add(TextureExpression);
 					UnrealMaterial->Normal.Expression = TextureExpression;
 				}
+				
+				position_y += 300;
 
 			}
 			
