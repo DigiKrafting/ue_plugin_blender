@@ -21,8 +21,8 @@ void EmptyLinkFunctionForGeneratedCodeBlender_Importer_init() {}
 				nullptr,
 				0,
 				PKG_CompiledIn | 0x00000040,
-				0x9A7AEB84,
-				0x374559E1,
+				0x967ACB68,
+				0x1AD3FBB3,
 				METADATA_PARAMS(nullptr, 0)
 			};
 			UE4CodeGen_Private::ConstructUPackage(ReturnPackage, PackageParams);

@@ -7,6 +7,12 @@ class FImport_Processer
 
 public:
 
-	static bool Process_JSON_Data(const FString& Filename);
+	bool Process_JSON_Open(const FString& Filename);
+	UFbxImportUI* Process_Options();
+	bool Process_Materials();
+	
+private:
+
+	TSharedPtr<FJsonObject> JsonObject;
 
 };

@@ -17,24 +17,63 @@
 #include "Materials/MaterialExpressionTextureSample.h"
 #include "Materials/Material.h"
 #include "Materials/MaterialExpressionConstant.h"
+#include "Factories/FbxImportUI.h"
+#include "Factories/FbxStaticMeshImportData.h"
 
 #define LOCTEXT_NAMESPACE "FBlender_ImporterModule"
 
-bool FImport_Processer::Process_JSON_Data(const FString& Filename)
+bool FImport_Processer::Process_JSON_Open(const FString& Filename)
 {
 
-	FString JsonString; 
+	FString JsonString;
 	FFileHelper::LoadFileToString(JsonString, *Filename);
-	TSharedPtr<FJsonObject> JsonObject = MakeShareable(new FJsonObject());
+	JsonObject = MakeShareable(new FJsonObject());
 	TSharedRef<TJsonReader<>> JsonReader = TJsonReaderFactory<>::Create(JsonString);
-	
-	if (FJsonSerializer::Deserialize(JsonReader, JsonObject) && JsonObject.IsValid())
-	{
+
+	if (FJsonSerializer::Deserialize(JsonReader, JsonObject) && JsonObject.IsValid()){
+		
+		return true;
+
+	} else {
+
+		FText DialogText = FText::Format(
+			LOCTEXT("Error deserializing/processing ", "[{0}]"),
+			FText::FromString(Filename)
+		);
+		FMessageDialog::Open(EAppMsgType::Ok, DialogText);
+
+		return false;
+
+	}
+
+}
+
+UFbxImportUI* FImport_Processer::Process_Options() {
+
+	UFbxImportUI* FBX_Options = NewObject<UFbxImportUI>();
+
+	TSharedPtr<FJsonObject> json = JsonObject->GetObjectField(TEXT("options"));
+
+	FBX_Options->bImportTextures = false; 
+
+	FBX_Options->bImportMaterials = json->GetBoolField(TEXT("ImportMaterials"));
+	FBX_Options->bImportAnimations = json->GetBoolField(TEXT("ImportAnimations"));
+	FBX_Options->bCreatePhysicsAsset = json->GetBoolField(TEXT("CreatePhysicsAsset"));
+
+	FBX_Options->StaticMeshImportData->NormalImportMethod = EFBXNormalImportMethod::FBXNIM_ImportNormalsAndTangents;
+
+	return FBX_Options;
+
+}
+bool FImport_Processer::Process_Materials()
+{
+
 		const FString data_path = JsonObject->GetStringField(TEXT("path"));
 		
 		// Process Materials
 
 		TArray<TSharedPtr<FJsonValue>> objArray = JsonObject->GetArrayField(TEXT("materials"));
+
 		for (int32 i = 0; i < objArray.Num(); i++)
 		{
 			TSharedPtr<FJsonValue> value = objArray[i];
@@ -221,17 +260,6 @@ bool FImport_Processer::Process_JSON_Data(const FString& Filename)
 
 		}
 		
-	} else {
-
-		FText DialogText = FText::Format(
-			LOCTEXT("Error deserializing/processing ", "[{0}]"),
-			FText::FromString(Filename)
-		);
-		FMessageDialog::Open(EAppMsgType::Ok, DialogText);
-		
-		return false;
-
-	}
 
 	return true;
 

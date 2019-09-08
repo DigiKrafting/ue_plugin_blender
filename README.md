@@ -1,16 +1,19 @@
 # UE Blender Importer
 
-Unreal Engine Editor Plugin for processing meshes/data imported from Blender. Designed to work with the blender addon https://github.com/DigiKrafting/blender_addon_ue which creates the "blender_addon_ue_data.json" needed for this plugin to activate.
+Unreal Engine Editor Plugin for processing FBX's imported from Blender. Designed to work with the blender addon https://github.com/DigiKrafting/blender_addon_ue which creates a "{fbx_file_name}.bjd" needed for this plugin to activate.
 
-\* WIP - ALPHA
+This plugin utilises the standard built in FBX import by using "UFbxFactory" as a child class so essentially it's only passing options from the ".bjd" file and assigning textures to materials.
+
+\* WIP - ALPHA (All the hard stuff is figured out now :) Just need to expose/make more options available)
 
 # Features
 
-- Assigns textures to materials
+- Automagically imports fbx's. (Wish I wrote this sooner)
+- Assigns textures to materials. (All those hours of drag/drop and assigning nodes)
 
 # Roadmap
 
-- Automatically process imported fbx's with options set from Blender.
+- Implement more options for import.
 - Submit to Marketplace once stable and well tested.
 
 # Required Unreal Version
@@ -21,36 +24,32 @@ Unreal Engine Editor Plugin for processing meshes/data imported from Blender. De
 
 # NOTES 
 
-\* There is no UI or editor toolbar buttons. The plugin activates on detection of a new "blender_addon_ue_data.json" file.
+\* There is no UI or editor toolbar buttons!!!
 
-### blender_addon_ue_data.json
+### {fbx_file_name}.bjd
 ~~~
 {
-    "path": "Meshes/Test/",
+    "path": "Meshes/Test/", 
+    "options": {
+        "ImportMaterials": true, 
+        "ImportAnimations": true, 
+        "CreatePhysicsAsset": true
+    }, 
     "materials": [
         {
             "name": "Material",
-            "base_color": "Textures/Cube_Material_BaseColor",
-            "normal": "Textures/Cube_Material_Normal",
-            "orm": "Textures/Cube_Material_OcclusionRoughnessMetallic",
-            "opacity": "",
-            "ambient_occlusion": "",
-            "metallic": "",
-            "roughness": "",
-            "emissive": ""
+             "base_color": "Textures/Cube_Material_BaseColor", 
+             "normal": "Textures/Cube_Material_Normal", 
+             "orm": "Textures/Cube_Material_OcclusionRoughnessMetallic", 
+             "opacity": "", 
+             "ambient_occlusion": "", 
+             "metallic": "", 
+             "roughness": "", 
+             "emissive": "Textures/Cube_Material_Emissive"
         }
     ]
 }
 ~~~
-
-### Log Error Message
-~~~
-AssetReimport: Failed to import file C:/Users/kye/Documents/Unreal Projects/DKS_Importer_Project/Content/Meshes/Test/blender_addon_ue_data.json.
-~~~
-
-This can be ignored as nothing is actually imported, blender_addon_ue_data.json is deleted once processed.
-
-\* If a UObject is returned from UImport_Factory::FactoryCreateFile, "blender_addon_ue_data.uasset" gets created. I tried returning the material from FImport_Processer::Process_JSON_Data, the error goes aways with a valid imported message, but the unneeded uasset file is created.
 
 # Installation
 
@@ -60,7 +59,7 @@ Extract and copy "Blender_Importer" to your projects "Plugins" folder (if it doe
 
 E.g. "C:\Users\kye\Documents\Unreal Projects\DKS_Importer_Project\Plugins" (Should be the same level as your Content folder "C:\Users\kye\Documents\Unreal Projects\DKS_Importer_Project\Content")
 
-You should end up with Plugins/Blender_Importer.
+You should end up with "Plugins/Blender_Importer".
 
 # Screenshots
 ## Blender
