@@ -11,10 +11,13 @@ Unreal Engine Editor Plugin for processing meshes/data imported from Blender. De
 # Roadmap
 
 - Automatically process imported fbx's with options set from Blender.
+- Submit to Marketplace once stable and well tested.
 
 # Required Unreal Version
 
 4.23
+
+\* The source compiles in 4.22 (Tested) and maybe (?) earlier versions.
 
 # NOTES 
 
@@ -33,7 +36,8 @@ Unreal Engine Editor Plugin for processing meshes/data imported from Blender. De
             "opacity": "",
             "ambient_occlusion": "",
             "metallic": "",
-            "roughness": ""
+            "roughness": "",
+            "emissive": ""
         }
     ]
 }
