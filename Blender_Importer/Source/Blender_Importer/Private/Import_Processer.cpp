@@ -19,6 +19,8 @@
 #include "Materials/MaterialExpressionConstant.h"
 #include "Factories/FbxImportUI.h"
 #include "Factories/FbxStaticMeshImportData.h"
+#include "Factories/FbxSkeletalMeshImportData.h"
+#include "Factories/FbxAnimSequenceImportData.h"
 
 #define LOCTEXT_NAMESPACE "FBlender_ImporterModule"
 
@@ -56,11 +58,65 @@ UFbxImportUI* FImport_Processer::Process_Options() {
 
 	FBX_Options->bImportTextures = false; 
 
+	FBX_Options->bImportMesh = json->GetBoolField(TEXT("ImportMesh"));
 	FBX_Options->bImportMaterials = json->GetBoolField(TEXT("ImportMaterials"));
 	FBX_Options->bImportAnimations = json->GetBoolField(TEXT("ImportAnimations"));
 	FBX_Options->bCreatePhysicsAsset = json->GetBoolField(TEXT("CreatePhysicsAsset"));
+	FBX_Options->bAutoComputeLodDistances = json->GetBoolField(TEXT("AutoComputeLodDistances"));
 
-	FBX_Options->StaticMeshImportData->NormalImportMethod = EFBXNormalImportMethod::FBXNIM_ImportNormalsAndTangents;
+	// Static Mesh
+
+	TSharedPtr<FJsonObject> json_static_mesh = json->GetObjectField(TEXT("static_mesh"));
+
+	FBX_Options->StaticMeshImportData->bImportMeshLODs = json_static_mesh->GetBoolField(TEXT("ImportMeshLODs"));
+	FBX_Options->StaticMeshImportData->bCombineMeshes = json_static_mesh->GetBoolField(TEXT("CombineMeshes"));
+	FBX_Options->StaticMeshImportData->bAutoGenerateCollision = json_static_mesh->GetBoolField(TEXT("AutoGenerateCollision"));
+
+	const FString options_static_mesh_normal_import_method = json_static_mesh->GetStringField(TEXT("NormalImportMethod"));
+	if (options_static_mesh_normal_import_method == "ImportNormalsAndTangents") {
+		FBX_Options->StaticMeshImportData->NormalImportMethod = EFBXNormalImportMethod::FBXNIM_ImportNormalsAndTangents;
+	} else if (options_static_mesh_normal_import_method == "ComputeNormals") {
+		FBX_Options->StaticMeshImportData->NormalImportMethod = EFBXNormalImportMethod::FBXNIM_ComputeNormals;
+	} else if (options_static_mesh_normal_import_method == "ImportNormals") {
+		FBX_Options->StaticMeshImportData->NormalImportMethod = EFBXNormalImportMethod::FBXNIM_ImportNormals;
+	}
+	
+	// Skeletal Mesh
+
+	TSharedPtr<FJsonObject> json_skeletal_mesh = json->GetObjectField(TEXT("skeletal_mesh"));
+
+	FBX_Options->SkeletalMeshImportData->bImportMeshLODs = json_skeletal_mesh->GetBoolField(TEXT("ImportMeshLODs"));
+	FBX_Options->SkeletalMeshImportData->bUseT0AsRefPose = json_skeletal_mesh->GetBoolField(TEXT("UseT0AsRefPose"));
+	FBX_Options->SkeletalMeshImportData->bPreserveSmoothingGroups = json_skeletal_mesh->GetBoolField(TEXT("PreserveSmoothingGroups"));
+	FBX_Options->SkeletalMeshImportData->bImportMorphTargets = json_skeletal_mesh->GetBoolField(TEXT("ImportMorphTargets"));
+
+	const FString options_skeletal_mesh_normal_import_method = json_skeletal_mesh->GetStringField(TEXT("NormalImportMethod"));
+	if (options_skeletal_mesh_normal_import_method == "ImportNormalsAndTangents") {
+		FBX_Options->SkeletalMeshImportData->NormalImportMethod = EFBXNormalImportMethod::FBXNIM_ImportNormalsAndTangents;
+	} else if (options_skeletal_mesh_normal_import_method == "ComputeNormals") {
+		FBX_Options->SkeletalMeshImportData->NormalImportMethod = EFBXNormalImportMethod::FBXNIM_ComputeNormals;
+	} else if (options_skeletal_mesh_normal_import_method == "ImportNormals") {
+		FBX_Options->SkeletalMeshImportData->NormalImportMethod = EFBXNormalImportMethod::FBXNIM_ImportNormals;
+	}
+
+	// Animation
+	
+	TSharedPtr<FJsonObject> json_animation = json->GetObjectField(TEXT("animation"));
+	
+	FBX_Options->AnimSequenceImportData->bImportMeshesInBoneHierarchy = json_animation->GetBoolField(TEXT("ImportMeshesInBoneHierarchy"));
+	FBX_Options->AnimSequenceImportData->bUseDefaultSampleRate = json_animation->GetBoolField(TEXT("UseDefaultSampleRate"));
+	FBX_Options->AnimSequenceImportData->CustomSampleRate = json_animation->GetNumberField(TEXT("CustomSampleRate"));
+	FBX_Options->AnimSequenceImportData->bConvertScene = json_animation->GetBoolField(TEXT("ConvertScene"));
+
+	const FString options_animation_time = json_animation->GetStringField(TEXT("animation_time"));
+	if (options_animation_time == "AnimatedKey") {
+		FBX_Options->AnimSequenceImportData->AnimationLength = EFBXAnimationLengthImportType::FBXALIT_AnimatedKey;
+	} else if (options_animation_time == "ExportedTime") {
+		FBX_Options->AnimSequenceImportData->AnimationLength = EFBXAnimationLengthImportType::FBXALIT_ExportedTime;
+	} else if (options_animation_time == "SetRange") {
+		FBX_Options->AnimSequenceImportData->AnimationLength = EFBXAnimationLengthImportType::FBXALIT_SetRange;
+		FBX_Options->AnimSequenceImportData->FrameImportRange = FInt32Interval(json_animation->GetNumberField(TEXT("frame_range_min")), json_animation->GetNumberField(TEXT("frame_range_max")));
+	}
 
 	return FBX_Options;
 

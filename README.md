@@ -29,25 +29,49 @@ This plugin utilises the standard built in FBX import by using "UFbxFactory" as 
 ### {fbx_file_name}.bjd
 ~~~
 {
-    "path": "Meshes/Test/", 
-    "options": {
-        "ImportMaterials": true, 
-        "ImportAnimations": true, 
-        "CreatePhysicsAsset": true
-    }, 
-    "materials": [
-        {
-            "name": "Material",
-             "base_color": "Textures/Cube_Material_BaseColor", 
-             "normal": "Textures/Cube_Material_Normal", 
-             "orm": "Textures/Cube_Material_OcclusionRoughnessMetallic", 
-             "opacity": "", 
-             "ambient_occlusion": "", 
-             "metallic": "", 
-             "roughness": "", 
-             "emissive": "Textures/Cube_Material_Emissive"
-        }
-    ]
+   "path":"Meshes/Test/",
+   "options":{
+      "ImportMesh":true,
+      "ImportMaterials":true,
+      "ImportAnimations":true,
+      "CreatePhysicsAsset":true,
+      "AutoComputeLodDistances":true,
+      "static_mesh":{
+         "NormalImportMethod":"ImportNormalsAndTangents",
+         "ImportMeshLODs":false,
+         "CombineMeshes":false,
+         "AutoGenerateCollision":true
+      },
+      "skeletal_mesh":{
+         "NormalImportMethod":"ImportNormalsAndTangents",
+         "ImportMeshLODs":false,
+         "UseT0AsRefPose":true,
+         "PreserveSmoothingGroups":true,
+         "ImportMorphTargets":false
+      },
+      "animation":{
+         "animation_length":"ExportedTime",
+         "frame_range_min":0,
+         "frame_range_max":0,
+         "ImportMeshesInBoneHierarchy":true,
+         "UseDefaultSampleRate":false,
+         "CustomSampleRate":0,
+         "ConvertScene":true
+      }
+   },
+   "materials":[
+      {
+         "name":"Material",
+         "base_color":"Textures/Cube_Material_BaseColor",
+         "normal":"Textures/Cube_Material_Normal",
+         "orm":"Textures/Cube_Material_OcclusionRoughnessMetallic",
+         "opacity":"",
+         "ambient_occlusion":"",
+         "metallic":"",
+         "roughness":"",
+         "emissive":"Textures/Cube_Material_Emissive"
+      }
+   ]
 }
 ~~~
 
