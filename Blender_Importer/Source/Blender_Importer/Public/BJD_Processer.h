@@ -2,7 +2,12 @@
 
 #pragma once
 
-class FImport_Processer
+#include "Factories/FbxStaticMeshImportData.h"
+#include "Factories/FbxSkeletalMeshImportData.h"
+#include "Factories/FbxAnimSequenceImportData.h"
+#include "Factories/FbxImportUI.h"
+
+class FBJD_Processer
 {
 
 public:

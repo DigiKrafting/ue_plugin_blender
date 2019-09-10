@@ -27,15 +27,15 @@ public class Blender_Importer : ModuleRules
 			new string[]
 			{
 				"Core",
-				// ... add other public dependencies that you statically link with here ...
-			}
+                "Engine",
+            }
 			);
 			
 		
 		PrivateDependencyModuleNames.AddRange(
 			new string[]
 			{
-				"Projects",
+                "Projects",
 				"InputCore",
 				"UnrealEd",
 				"LevelEditor",
@@ -48,7 +48,11 @@ public class Blender_Importer : ModuleRules
                 "ContentBrowser",
                 "MaterialEditor",
                 "MeshUtilities",
+                "MeshUtilitiesCommon",
+                "MeshDescription",
                 "MessageLog",
+                "OutputLog",
+                "AssetRegistry",
 				// ... add private dependencies that you statically link with here ...	
 			}
 			);
@@ -60,5 +64,10 @@ public class Blender_Importer : ModuleRules
 				// ... add any modules that your module loads dynamically here ...
 			}
 			);
-	}
+
+        AddEngineThirdPartyPrivateStaticDependencies(Target,
+            "FBX"
+        );
+
+    }
 }

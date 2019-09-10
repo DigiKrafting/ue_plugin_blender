@@ -1,9 +1,11 @@
 // Copyright 1998-2019 Epic Games, Inc. All Rights Reserved.
 
-#include "Import_Processer.h"
+#include "BJD_Processer.h"
+
 #include "AssetRegistryModule.h"
 #include "Editor/UnrealEd/Public/Editor.h"
 #include "Misc/FeedbackContext.h"
+#include "Misc/MessageDialog.h"
 #include "Logging/LogMacros.h"
 #include "Logging/TokenizedMessage.h"
 #include "MessageLogModule.h"
@@ -17,14 +19,10 @@
 #include "Materials/MaterialExpressionTextureSample.h"
 #include "Materials/Material.h"
 #include "Materials/MaterialExpressionConstant.h"
-#include "Factories/FbxImportUI.h"
-#include "Factories/FbxStaticMeshImportData.h"
-#include "Factories/FbxSkeletalMeshImportData.h"
-#include "Factories/FbxAnimSequenceImportData.h"
 
 #define LOCTEXT_NAMESPACE "FBlender_ImporterModule"
 
-bool FImport_Processer::Process_JSON_Open(const FString& Filename)
+bool FBJD_Processer::Process_JSON_Open(const FString& Filename)
 {
 
 	FString JsonString;
@@ -50,14 +48,14 @@ bool FImport_Processer::Process_JSON_Open(const FString& Filename)
 
 }
 
-UFbxImportUI* FImport_Processer::Process_Options() {
+UFbxImportUI* FBJD_Processer::Process_Options() {
 
 	UFbxImportUI* FBX_Options = NewObject<UFbxImportUI>();
 
-	TSharedPtr<FJsonObject> json = JsonObject->GetObjectField(TEXT("options"));
+	TSharedPtr<FJsonObject> json = JsonObject->GetObjectField(TEXT("Options"));
 
-	FBX_Options->bImportTextures = false; 
-
+	FBX_Options->bImportTextures = false;
+	
 	FBX_Options->bImportMesh = json->GetBoolField(TEXT("ImportMesh"));
 	FBX_Options->bImportMaterials = json->GetBoolField(TEXT("ImportMaterials"));
 	FBX_Options->bImportAnimations = json->GetBoolField(TEXT("ImportAnimations"));
@@ -66,7 +64,7 @@ UFbxImportUI* FImport_Processer::Process_Options() {
 
 	// Static Mesh
 
-	TSharedPtr<FJsonObject> json_static_mesh = json->GetObjectField(TEXT("static_mesh"));
+	TSharedPtr<FJsonObject> json_static_mesh = json->GetObjectField(TEXT("Static_Mesh"));
 
 	FBX_Options->StaticMeshImportData->bImportMeshLODs = json_static_mesh->GetBoolField(TEXT("ImportMeshLODs"));
 	FBX_Options->StaticMeshImportData->bCombineMeshes = json_static_mesh->GetBoolField(TEXT("CombineMeshes"));
@@ -83,7 +81,7 @@ UFbxImportUI* FImport_Processer::Process_Options() {
 	
 	// Skeletal Mesh
 
-	TSharedPtr<FJsonObject> json_skeletal_mesh = json->GetObjectField(TEXT("skeletal_mesh"));
+	TSharedPtr<FJsonObject> json_skeletal_mesh = json->GetObjectField(TEXT("Skeletal_Mesh"));
 
 	FBX_Options->SkeletalMeshImportData->bImportMeshLODs = json_skeletal_mesh->GetBoolField(TEXT("ImportMeshLODs"));
 	FBX_Options->SkeletalMeshImportData->bUseT0AsRefPose = json_skeletal_mesh->GetBoolField(TEXT("UseT0AsRefPose"));
@@ -101,48 +99,48 @@ UFbxImportUI* FImport_Processer::Process_Options() {
 
 	// Animation
 	
-	TSharedPtr<FJsonObject> json_animation = json->GetObjectField(TEXT("animation"));
+	TSharedPtr<FJsonObject> json_animation = json->GetObjectField(TEXT("Animation"));
 	
 	FBX_Options->AnimSequenceImportData->bImportMeshesInBoneHierarchy = json_animation->GetBoolField(TEXT("ImportMeshesInBoneHierarchy"));
 	FBX_Options->AnimSequenceImportData->bUseDefaultSampleRate = json_animation->GetBoolField(TEXT("UseDefaultSampleRate"));
 	FBX_Options->AnimSequenceImportData->CustomSampleRate = json_animation->GetNumberField(TEXT("CustomSampleRate"));
 	FBX_Options->AnimSequenceImportData->bConvertScene = json_animation->GetBoolField(TEXT("ConvertScene"));
 
-	const FString options_animation_time = json_animation->GetStringField(TEXT("animation_time"));
-	if (options_animation_time == "AnimatedKey") {
+	const FString options_animation_length = json_animation->GetStringField(TEXT("AnimationLength"));
+	if (options_animation_length == "AnimatedKey") {
 		FBX_Options->AnimSequenceImportData->AnimationLength = EFBXAnimationLengthImportType::FBXALIT_AnimatedKey;
-	} else if (options_animation_time == "ExportedTime") {
+	} else if (options_animation_length == "ExportedTime") {
 		FBX_Options->AnimSequenceImportData->AnimationLength = EFBXAnimationLengthImportType::FBXALIT_ExportedTime;
-	} else if (options_animation_time == "SetRange") {
+	} else if (options_animation_length == "SetRange") {
 		FBX_Options->AnimSequenceImportData->AnimationLength = EFBXAnimationLengthImportType::FBXALIT_SetRange;
-		FBX_Options->AnimSequenceImportData->FrameImportRange = FInt32Interval(json_animation->GetNumberField(TEXT("frame_range_min")), json_animation->GetNumberField(TEXT("frame_range_max")));
+		FBX_Options->AnimSequenceImportData->FrameImportRange = FInt32Interval(json_animation->GetNumberField(TEXT("FrameRangeMin")), json_animation->GetNumberField(TEXT("FrameRangeMax")));
 	}
 
 	return FBX_Options;
 
 }
-bool FImport_Processer::Process_Materials()
+bool FBJD_Processer::Process_Materials()
 {
 
-		const FString data_path = JsonObject->GetStringField(TEXT("path"));
+		const FString data_path = JsonObject->GetStringField(TEXT("Path"));
 		
 		// Process Materials
 
-		TArray<TSharedPtr<FJsonValue>> objArray = JsonObject->GetArrayField(TEXT("materials"));
+		TArray<TSharedPtr<FJsonValue>> objArray = JsonObject->GetArrayField(TEXT("Materials"));
 
 		for (int32 i = 0; i < objArray.Num(); i++)
 		{
 			TSharedPtr<FJsonValue> value = objArray[i];
 			TSharedPtr<FJsonObject> json = value->AsObject();
 			
-			const FString data_name = json->GetStringField(TEXT("name"));
-			const FString data_base_color = json->GetStringField(TEXT("base_color"));
-			const FString data_orm = json->GetStringField(TEXT("orm"));
-			const FString data_normal = json->GetStringField(TEXT("normal"));
-			const FString data_ambient_occlusion = json->GetStringField(TEXT("ambient_occlusion"));
-			const FString data_metallic = json->GetStringField(TEXT("metallic"));
-			const FString data_roughness = json->GetStringField(TEXT("roughness"));
-			const FString data_emissive = json->GetStringField(TEXT("emissive"));
+			const FString data_name = json->GetStringField(TEXT("Name"));
+			const FString data_base_color = json->GetStringField(TEXT("BaseColor"));
+			const FString data_orm = json->GetStringField(TEXT("ORM"));
+			const FString data_normal = json->GetStringField(TEXT("Normal"));
+			const FString data_ambient_occlusion = json->GetStringField(TEXT("AmbientOcclusion"));
+			const FString data_metallic = json->GetStringField(TEXT("Metallic"));
+			const FString data_roughness = json->GetStringField(TEXT("Roughness"));
+			const FString data_emissive = json->GetStringField(TEXT("Emissive"));
 
 			FString PackageName = TEXT("/Game/") + data_path + data_name;
 

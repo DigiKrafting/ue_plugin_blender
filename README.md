@@ -29,47 +29,47 @@ This plugin utilises the standard built in FBX import by using "UFbxFactory" as 
 ### {fbx_file_name}.bjd
 ~~~
 {
-   "path":"Meshes/Test/",
-   "options":{
+   "Path":"Meshes/Test/",
+   "Options":{
       "ImportMesh":true,
       "ImportMaterials":true,
       "ImportAnimations":true,
       "CreatePhysicsAsset":true,
       "AutoComputeLodDistances":true,
-      "static_mesh":{
+      "Static_Mesh":{
          "NormalImportMethod":"ImportNormalsAndTangents",
          "ImportMeshLODs":false,
          "CombineMeshes":false,
          "AutoGenerateCollision":true
       },
-      "skeletal_mesh":{
+      "Skeletal_Mesh":{
          "NormalImportMethod":"ImportNormalsAndTangents",
          "ImportMeshLODs":false,
          "UseT0AsRefPose":true,
          "PreserveSmoothingGroups":true,
          "ImportMorphTargets":false
       },
-      "animation":{
-         "animation_length":"ExportedTime",
-         "frame_range_min":0,
-         "frame_range_max":0,
+      "Animation":{
+         "AnimationLength":"ExportedTime",
+         "FrameRangeMin":0,
+         "FrameRangeMax":0,
          "ImportMeshesInBoneHierarchy":true,
          "UseDefaultSampleRate":false,
          "CustomSampleRate":0,
          "ConvertScene":true
       }
    },
-   "materials":[
+   "Materials":[
       {
-         "name":"Material",
-         "base_color":"Textures/Cube_Material_BaseColor",
-         "normal":"Textures/Cube_Material_Normal",
-         "orm":"Textures/Cube_Material_OcclusionRoughnessMetallic",
-         "opacity":"",
-         "ambient_occlusion":"",
-         "metallic":"",
-         "roughness":"",
-         "emissive":"Textures/Cube_Material_Emissive"
+         "Name":"Material",
+         "BaseColor":"Textures/Cube_Material_BaseColor",
+         "Normal":"Textures/Cube_Material_Normal",
+         "Orm":"Textures/Cube_Material_OcclusionRoughnessMetallic",
+         "Opacity":"",
+         "AmbientOcclusion":"",
+         "Metallic":"",
+         "Roughness":"",
+         "Emissive":"Textures/Cube_Material_Emissive"
       }
    ]
 }
