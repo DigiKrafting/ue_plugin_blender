@@ -1,6 +1,6 @@
 // Copyright 1998-2019 Epic Games, Inc. All Rights Reserved.
 
-#include "BJD_Processer.h"
+#include "Import_BJD_Processer.h"
 
 #include "AssetRegistryModule.h"
 #include "Editor/UnrealEd/Public/Editor.h"
@@ -22,7 +22,7 @@
 
 #define LOCTEXT_NAMESPACE "FBlender_ImporterModule"
 
-bool FBJD_Processer::Process_JSON_Open(const FString& Filename)
+bool FImport_BJD_Processer::Process_JSON_Open(const FString& Filename)
 {
 
 	FString JsonString;
@@ -48,7 +48,14 @@ bool FBJD_Processer::Process_JSON_Open(const FString& Filename)
 
 }
 
-UFbxImportUI* FBJD_Processer::Process_Options() {
+bool FImport_BJD_Processer::Process_Auto()
+{
+	
+	return JsonObject->GetBoolField(TEXT("Auto"));
+
+}
+
+UFbxImportUI* FImport_BJD_Processer::Process_Options() {
 
 	UFbxImportUI* FBX_Options = NewObject<UFbxImportUI>();
 
@@ -119,7 +126,8 @@ UFbxImportUI* FBJD_Processer::Process_Options() {
 	return FBX_Options;
 
 }
-bool FBJD_Processer::Process_Materials()
+
+bool FImport_BJD_Processer::Process_Materials()
 {
 
 		const FString data_path = JsonObject->GetStringField(TEXT("Path"));

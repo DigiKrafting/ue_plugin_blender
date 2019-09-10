@@ -29,6 +29,7 @@ This plugin utilises the standard built in FBX import by using "UFbxFactory" as 
 ### {fbx_file_name}.bjd
 ~~~
 {
+   "Auto": true,
    "Path":"Meshes/Test/",
    "Options":{
       "ImportMesh":true,

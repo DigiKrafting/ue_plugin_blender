@@ -7,7 +7,7 @@
 #include "Factories/FbxAnimSequenceImportData.h"
 #include "Factories/FbxImportUI.h"
 
-class FBJD_Processer
+class FImport_BJD_Processer
 {
 
 public:
@@ -15,7 +15,8 @@ public:
 	bool Process_JSON_Open(const FString& Filename);
 	UFbxImportUI* Process_Options();
 	bool Process_Materials();
-	
+	bool Process_Auto();
+
 private:
 
 	TSharedPtr<FJsonObject> JsonObject;

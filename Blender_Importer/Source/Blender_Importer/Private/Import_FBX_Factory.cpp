@@ -1,7 +1,7 @@
 // Copyright 1998-2019 Epic Games, Inc. All Rights Reserved.
 
 #include "Import_FBX_Factory.h"
-#include "BJD_Processer.h"
+#include "Import_BJD_Processer.h"
 #include "Misc/Paths.h"
 #include "AssetImportTask.h"
 #include "Factories/FbxImportUI.h"
@@ -23,7 +23,7 @@ UImport_FBX_Factory::UImport_FBX_Factory(const FObjectInitializer& ObjectInitial
 	bOperationCanceled = false;
 	bDetectImportTypeOnImport = true;
 	ImportPriority = 200;
-
+	
 }
 
 bool UImport_FBX_Factory::FactoryCanImport(const FString& Filename)
@@ -45,20 +45,20 @@ UObject* UImport_FBX_Factory::FactoryCreateFile(UClass* InClass, UObject* InPare
 
 	UObject* CreatedObject = NULL;
 	
-	FBJD_Processer BJD_Processer;
+	FImport_BJD_Processer Import_BJD_Processer;
 	
 	const FString JSON_Filename = Filename.Replace(TEXT(".fbx"), TEXT(".bjd"));
 	
-	if (BJD_Processer.Process_JSON_Open(JSON_Filename)) {
+	if (Import_BJD_Processer.Process_JSON_Open(JSON_Filename)) {
 
 		UAssetImportTask* Task = NewObject<UAssetImportTask>();
-		Task->bAutomated = true;
-		Task->Options = BJD_Processer.Process_Options();;
+		Task->bAutomated = Import_BJD_Processer.Process_Auto();
+		Task->Options = Import_BJD_Processer.Process_Options();
 		SetAssetImportTask(Task);
 
 		CreatedObject = Super::FactoryCreateFile(InClass, InParent, InName, Flags, Filename, Parms, Warn, bOutOperationCanceled);
 
-		const bool _processed_materials = BJD_Processer.Process_Materials();
+		const bool _processed_materials = Import_BJD_Processer.Process_Materials();
 
 		remove(TCHAR_TO_ANSI(*JSON_Filename));
 
