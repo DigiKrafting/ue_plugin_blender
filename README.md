@@ -8,8 +8,8 @@ This plugin utilises the standard built in FBX import by using "UFbxFactory" as 
 
 # Features
 
-- Automagically imports fbx's. (Wish I wrote this sooner)
-- Assigns textures to materials. (All those hours of drag/drop and assigning nodes)
+- Automagically imports fbx's from settings set in Blender.
+- Assigns textures to materials.
 
 # Roadmap
 
