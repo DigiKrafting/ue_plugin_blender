@@ -1,6 +1,6 @@
 # UE Blender Importer
 
-Unreal Engine Editor Plugin for processing FBX's imported from Blender. Designed to work with the blender addon https://github.com/DigiKrafting/blender_addon_ue which creates a "{fbx_file_name}.bjd" needed for this plugin to activate.
+Unreal Engine Editor Plugin for processing FBX's imported from Blender. Designed to work with the Blender Addon https://github.com/DigiKrafting/blender_addon_ue which creates a "{fbx_file_name}.bjd" needed for this plugin to activate.
 
 This plugin utilises the standard built in FBX import by using "UFbxFactory" as a child class so essentially it's only passing options from the ".bjd" file and assigning textures to materials.
 
