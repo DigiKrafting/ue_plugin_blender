@@ -4,8 +4,6 @@ Unreal Engine Editor Plugin for processing FBX's imported from Blender. Designed
 
 This plugin utilises the standard built in FBX import by using "UFbxFactory" as a child class so essentially it's only passing options from the ".bjd" file and assigning textures to materials.
 
-\* WIP - ALPHA (All the hard stuff is figured out now :) Just need to expose/make more options available)
-
 # Features
 
 - Automagically imports fbx's from settings set in Blender.
